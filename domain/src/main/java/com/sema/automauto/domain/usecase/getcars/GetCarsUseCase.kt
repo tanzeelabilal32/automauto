@@ -60,16 +60,15 @@ class GetCarsUseCaseImpl @Inject constructor(
     private fun filter(
         response: Flow<List<CarSearchItem>>,
         query: String,
-        filterType: FilterType = FilterType.Date(SortingType.Descending)
-    ): Flow<Resource<List<CarSearchItem>>> {
-        val filter = response.map {
+        filterType: FilterType
+    ): Flow<Resource<List<CarSearchItem>>> { val filter = response.map {
             it.filter { car -> car.make.lowercase().contains(query.lowercase()) }
         }
         return filter.map { cars ->
             val sortedCars = when (filterType.sortingType) {
                 is SortingType.Ascending -> {
                     when (filterType) {
-                        is FilterType.Title -> cars.sortedBy { it.model.lowercase() }
+                        is FilterType.Title -> cars.sortedBy { it.make.lowercase() }
                         is FilterType.Date -> cars.sortedBy { it.firstRegistration }
                         is FilterType.Color -> cars.sortedBy { it.colour }
                         is FilterType.Price -> cars.sortedBy { it.price }
@@ -78,7 +77,7 @@ class GetCarsUseCaseImpl @Inject constructor(
 
                 is SortingType.Descending -> {
                     when (filterType) {
-                        is FilterType.Title -> cars.sortedByDescending { it.model.lowercase() }
+                        is FilterType.Title -> cars.sortedByDescending { it.make.lowercase() }
                         is FilterType.Date -> cars.sortedByDescending { it.firstRegistration }
                         is FilterType.Color -> cars.sortedByDescending { it.colour }
                         is FilterType.Price -> cars.sortedByDescending { it.price }
