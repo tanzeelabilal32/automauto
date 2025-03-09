@@ -1,0 +1,109 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
+}
+
+apply from: rootProject.file('dependencies.gradle')
+
+android {
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.sema.automauto"
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner = "com.sema.automauto.HiltTestRunner"
+
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion composeVersion
+    }
+
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+    namespace 'com.sema.automauto'
+}
+
+dependencies {
+    implementation project(path: ':component')
+    implementation project(path: ':domain')
+    implementation project(path: ':shared-test')
+
+    implementation "androidx.core:core-ktx:$coreKtxVersion"
+    implementation "androidx.compose.ui:ui:$composeVersion"
+    implementation "androidx.compose.material:material:$composeVersion"
+    implementation "androidx.compose.ui:ui-tooling-preview:$composeVersion"
+    implementation "com.google.accompanist:accompanist-pager:$accompanistVersion"
+
+    // hilt
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+
+    debugImplementation "androidx.compose.ui:ui-tooling:$composeVersion"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$composeVersion"
+    kapt "com.google.dagger:hilt-compiler:$hiltVersion"
+
+    implementation "androidx.hilt:hilt-navigation-compose:$hiltNavComposeVersion"
+    implementation "androidx.navigation:navigation-compose:$navComposeVersion"
+    implementation "io.coil-kt:coil-compose:$coilVersion"
+
+    testImplementation project(path: ':shared-test')
+    testImplementation "junit:junit:$junitVersion"
+
+    testImplementation "org.mockito:mockito-inline:$mockitoInlineVersion"
+    testImplementation "androidx.arch.core:core-testing:$testArchCoreVersion"
+    testImplementation "org.mockito:mockito-android:$mockitoVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion"
+    testImplementation "io.mockk:mockk:1.13.7"
+    testImplementation 'org.robolectric:robolectric:4.7.3'
+    testImplementation 'androidx.compose.ui:ui-test-junit4:1.0.5'
+    debugImplementation 'androidx.compose.ui:ui-test-manifest:1.0.5'
+    testImplementation "com.google.dagger:hilt-android-testing:$hiltTestVersion"
+    kaptTest "com.google.dagger:hilt-android-compiler:$hiltTestVersion"
+
+    androidTestImplementation project(path: ':shared-test')
+    androidTestImplementation "androidx.test.ext:junit:$junitExtVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$composeVersion"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hiltTestVersion"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hiltTestVersion"
+}
