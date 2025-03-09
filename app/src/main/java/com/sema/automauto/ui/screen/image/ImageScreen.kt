@@ -33,7 +33,10 @@ fun ImageScreen(imageViewModel: ImageViewModel = hiltViewModel()) {
         },
         modifier = Modifier.fillMaxSize()
     ) { padding ->
-        ImagesContent(imageViewModel = imageViewModel)
+        Column(modifier  = Modifier.padding(padding)) {
+            ImagesContent(imageViewModel = imageViewModel)
+        }
+
     }
 }
 

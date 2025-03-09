@@ -231,7 +231,8 @@ fun CarImage(item: CarSearchItem) {
             ImageRequest.Builder(LocalContext.current)
                 .error(R.drawable.ic_filter)
                 .placeholder(R.drawable.ic_filter)
-                .data(it.first().url)),
+                .data(it.first().url)
+                .build()),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier

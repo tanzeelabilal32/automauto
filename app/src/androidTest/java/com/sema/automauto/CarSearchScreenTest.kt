@@ -94,4 +94,23 @@ class CarSearchScreenTest {
             onNodeWithTag(Tags.CARS_LIST_VIEW).onChildren()[1].assert(hasText("BMW 316i"))
         }
     }
+
+    @Test
+    fun testSortingByPrice(){
+        // given
+        composeTestRule.activity.setContent {
+            CarSearchScreen {
+            }
+        }
+
+        //when
+        composeTestRule.onNodeWithTag(Tags.FILTER).performClick()
+        composeTestRule.onNodeWithText("Sort by Price").performClick()
+        composeTestRule.onNodeWithText("Apply").performClick()
+
+        //then
+        composeTestRule.apply {
+            onNodeWithTag(Tags.CARS_LIST_VIEW).onChildren().onFirst().assert(hasText("Porsche 911"))
+        }
+    }
 }
