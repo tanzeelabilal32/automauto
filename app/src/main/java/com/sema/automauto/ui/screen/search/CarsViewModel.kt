@@ -2,6 +2,7 @@ package com.sema.automauto.ui.screen.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mock.myanalytics.FBTracker
 import com.sema.automauto.domain.usecase.getcars.GetCarsUseCase
 import com.sema.automauto.domain.util.FilterType
 import com.sema.automauto.domain.util.SortingType
@@ -19,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CarsViewModel @Inject constructor(
     private val carsUseCase: GetCarsUseCase,
+    private val analytics: FBTracker
 ) : ViewModel() {
     private val _carsUiState = MutableStateFlow<CarsListUiState>(CarsListUiState.Loading)
     val carsUiState: StateFlow<CarsListUiState> = _carsUiState
@@ -33,6 +35,7 @@ class CarsViewModel @Inject constructor(
     fun searchCars(query: String) = viewModelScope.launch {
         queryString = query
         carsUseCase(queryString, filterType).collect(::handleResponse)
+        analytics.logEvent("hi", mapOf("query" to query))
     }
 
     fun filterCars(filterType: FilterType) = viewModelScope.launch {
